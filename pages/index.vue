@@ -28,6 +28,9 @@
             color="primary"
             :rules="[$rules.required()]"
             outlined
+            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="show ? 'text' : 'password'"
+            @click:append="show = !show"
           ></v-text-field>
         </v-form>
       </v-col>
@@ -40,21 +43,45 @@
           :disabled="!valid"
           block
           tile
+          @click="login"
           >Entrar</v-btn
         >
       </v-col>
+      <v-slide-y-transition>
+        <div v-if="unauthorized" class="pt-5 error--text">
+          E-mail ou senha incorretos.
+        </div>
+      </v-slide-y-transition>
     </v-sheet>
   </v-row>
 </template>
 
 <script>
 export default {
+  auth: 'guest',
   data() {
     return {
       email: '',
       password: '',
+      show: false,
       valid: false,
+      unauthorized: false,
     }
+  },
+  methods: {
+    async login() {
+      try {
+        await this.$auth.loginWith('local', {
+          data: {
+            email: this.email,
+            password: this.password,
+          },
+        })
+        this.$router.push('/dashboard')
+      } catch {
+        this.unauthorized = true
+      }
+    },
   },
 }
 </script>

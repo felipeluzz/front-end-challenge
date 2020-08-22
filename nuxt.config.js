@@ -6,8 +6,8 @@ export default {
     host: '0.0.0.0',
   },
   head: {
-    titleTemplate: 'nave.rs',
-    title: 'nave.rs',
+    titleTemplate: 'Nave.rs',
+    title: 'Nave.rs',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -17,43 +17,40 @@ export default {
         content: 'CONSULTORIA PARA CRIAÇÃO DE SOLUÇÕES DIGITAIS',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }],
   },
-  /*
-   ** Global CSS
-   */
   css: ['@/assets/global.scss'],
-  /*
-   ** Plugins to load before mounting the App
-   ** https://nuxtjs.org/guide/plugins
-   */
   plugins: ['@/plugins/rules.js'],
-  /*
-   ** Auto import components
-   ** See https://nuxtjs.org/api/configuration-components
-   */
   components: true,
-  /*
-   ** Nuxt.js dev-modules
-   */
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
   ],
-  /*
-   ** Nuxt.js modules
-   */
-  modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  axios: {},
-  /*
-   ** vuetify module configuration
-   ** https://github.com/nuxt-community/vuetify-module
-   */
+  modules: ['@nuxtjs/axios', '@nuxtjs/pwa', '@nuxtjs/auth'],
+  axios: {
+    progress: true,
+    baseURL: 'https://navedex-api.herokuapp.com/v1',
+  },
+  auth: {
+    redirect: {
+      login: '/',
+      home: '/dashboard',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/users/login',
+            method: 'post',
+            propertyName: 'token',
+          },
+          logout: { url: '/login', method: 'post' },
+          user: false,
+        },
+      },
+    },
+  },
   vuetify: {
     customVariables: ['@/assets/variables.scss'],
     treeShake: true,
@@ -66,5 +63,8 @@ export default {
         },
       },
     },
+  },
+  router: {
+    middleware: ['auth'],
   },
 }
