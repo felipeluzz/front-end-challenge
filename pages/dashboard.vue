@@ -24,6 +24,15 @@ export default {
   components: {
     NaverProfile,
   },
+  data() {
+    return {
+      navers: [],
+    }
+  },
+  async created() {
+    const response = await this.$axios.get('/navers')
+    console.log(response)
+  },
 }
 </script>
 

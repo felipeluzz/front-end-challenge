@@ -57,7 +57,7 @@ export default {
     theme: {
       themes: {
         light: {
-          primary: '#000000',
+          primary: '#212121',
           secondary: '#ffffff',
           button: '#212121',
         },

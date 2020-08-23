@@ -42,7 +42,7 @@
           class="pa-6 white--text"
           :disabled="!valid"
           block
-          tile
+          :loading="loading"
           @click="login"
           >Entrar</v-btn
         >
@@ -66,10 +66,12 @@ export default {
       show: false,
       valid: false,
       unauthorized: false,
+      loading: false,
     }
   },
   methods: {
     async login() {
+      this.loading = true
       try {
         await this.$auth.loginWith('local', {
           data: {
@@ -77,8 +79,10 @@ export default {
             password: this.password,
           },
         })
+        this.loading = false
         this.$router.push('/dashboard')
       } catch {
+        this.loading = false
         this.unauthorized = true
       }
     },
