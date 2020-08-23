@@ -1,5 +1,7 @@
 <template>
   <v-app class="content">
+    <Toolbar v-if="$auth.loggedIn"></Toolbar>
+
     <v-main>
       <v-container fluid>
         <nuxt />
@@ -27,7 +29,12 @@
 </template>
 
 <script>
+import Toolbar from '@/components/structure/Toolbar.vue'
+
 export default {
+  components: {
+    Toolbar,
+  },
   data() {
     return {
       fab: false,
