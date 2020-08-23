@@ -1,20 +1,21 @@
 <template>
   <div>
-    <ExpandedProfile @delete-naver="openDeleteDialog">
+    <ExpandedProfile :naver="naver" @delete-naver="openDeleteDialog">
       <v-img
         slot="activatorButton"
         class="profile-image"
-        src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+        :src="naver.url"
         alt="Foto do naver"
+        :height="imageHeight"
       ></v-img>
     </ExpandedProfile>
     <div class="mt-4">
-      <p class="name" :style="{ fontSize: size }">Juliano Reis</p>
-      <p :style="{ fontSize: size }">Front-end Developer</p>
+      <p class="name" :style="{ fontSize: size }">{{ naver.name }}</p>
+      <p :style="{ fontSize: size }">{{ naver.job_role }}</p>
       <div class="d-flex">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
-            <DeleteNaver @deleted="naverDeleted()">
+            <DeleteNaver :id="naver.id" @deleted="naverDeleted()">
               <v-icon
                 slot="activatorButton"
                 ref="deleteIcon"
@@ -62,6 +63,12 @@ export default {
     ExpandedProfile,
     DeleteNaver,
   },
+  props: {
+    naver: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
   data() {
     return {
       isHydrated: false,
@@ -76,6 +83,22 @@ export default {
       }
       return '16px'
     },
+    imageHeight() {
+      if (this.isHydrated) {
+        if (this.$vuetify.breakpoint.xl) {
+          return '439.75'
+        } else if (this.$vuetify.breakpoint.lg) {
+          return '324'
+        } else if (this.$vuetify.breakpoint.md) {
+          return '301.33'
+        } else if (this.$vuetify.breakpoint.sm) {
+          return '216'
+        } else if (this.$vuetify.breakpoint.xs) {
+          return '139'
+        }
+      }
+      return '439.75'
+    },
   },
   mounted() {
     this.isHydrated = true
@@ -85,6 +108,7 @@ export default {
       this.$refs.deleteIcon.$el.click()
     },
     naverDeleted() {
+      this.$emit('naver-deleted')
       this.snackbarText = 'Naver excluído com sucesso!'
       this.snackbar = true
     },

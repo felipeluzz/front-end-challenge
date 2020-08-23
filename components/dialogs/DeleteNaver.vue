@@ -33,14 +33,21 @@
 
 <script>
 export default {
+  props: {
+    id: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       dialog: false,
     }
   },
   methods: {
-    deleteNaver() {
+    async deleteNaver() {
       this.dialog = false
+      await this.$axios.delete(`/navers/${this.id}`)
       this.$emit('deleted')
     },
   },
