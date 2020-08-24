@@ -43,6 +43,15 @@
         <NaverProfile :naver="naver" @naver-deleted="reload"></NaverProfile>
       </v-col>
     </v-row>
+    <v-snackbar v-model="snackbar" bottom color="secondary" right>
+      {{ snackbarText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn v-bind="attrs" dark text @click="snackbar = false">
+          fechar
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -57,10 +66,16 @@ export default {
     return {
       loading: true,
       navers: [],
+      snackbar: false,
+      snackbarText: '',
     }
   },
   created() {
     this.reload()
+    if (this.$router.currentRoute.query.saved) {
+      this.snackbarText = 'Naver salvo com sucesso!'
+      this.snackbar = true
+    }
   },
   methods: {
     async reload() {

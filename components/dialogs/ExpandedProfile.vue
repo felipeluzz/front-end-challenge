@@ -14,6 +14,11 @@
             alt="Foto do naver"
             class="image"
             max-height="503"
+          >
+            <v-img
+              slot="placeholder"
+              src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+            ></v-img
           ></v-img>
         </v-col>
         <v-col cols="12" sm="6" class="pa-5">

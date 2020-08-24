@@ -79,6 +79,7 @@
           width="176"
           :block="isHydrated && $vuetify.breakpoint.xs"
           :disabled="!valid"
+          :loading="loading"
           @click="save"
           >Salvar</v-btn
         >
@@ -103,14 +104,24 @@ export default {
       url: '',
       valid: false,
       date: '##/##/####',
+      loading: false,
     }
   },
   mounted() {
     this.isHydrated = true
   },
   methods: {
-    save() {
-      this.$router.push('/dashboard')
+    async save() {
+      this.loading = true
+      await this.$axios.post('/navers', {
+        name: this.name,
+        job_role: this.job_role,
+        birthdate: this.birthdate,
+        admission_date: this.admission_date,
+        project: this.project,
+        url: this.url,
+      })
+      this.$router.push({ path: 'dashboard', query: { saved: true } })
     },
   },
 }
