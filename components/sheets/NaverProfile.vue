@@ -40,6 +40,7 @@
               :large="$vuetify.breakpoint.mdAndUp"
               color="primary"
               v-on="on"
+              @click="edit"
               >mdi-pencil</v-icon
             >
           </template>
@@ -116,6 +117,9 @@ export default {
       this.$emit('naver-deleted')
       this.snackbarText = 'Naver excluído com sucesso!'
       this.snackbar = true
+    },
+    edit() {
+      this.$router.push({ path: 'create', query: { id: this.naver.id } })
     },
   },
 }

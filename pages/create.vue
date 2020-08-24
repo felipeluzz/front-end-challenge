@@ -6,7 +6,8 @@
         <nuxt-link class="back" to="/dashboard">
           <v-icon large color="primary" class="mr-4">mdi-chevron-left</v-icon>
         </nuxt-link>
-        <span>Adicionar Naver</span>
+        <span v-if="edit">Editar Naver</span>
+        <span v-else>Adicionar Naver</span>
       </div>
       <!-- Form -->
       <v-form v-model="valid">
@@ -37,7 +38,7 @@
               color="primary"
               label="Data de nacimento"
               :rules="[$rules.required(), $rules.date()]"
-              validate-on-blur
+              :validate-on-blur="!edit"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" class="px-5">
@@ -48,7 +49,7 @@
               color="primary"
               label="Data de admissão na empresa"
               :rules="[$rules.required(), $rules.date()]"
-              validate-on-blur
+              :validate-on-blur="!edit"
             ></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" class="px-5">
@@ -96,6 +97,8 @@ export default {
   data() {
     return {
       isHydrated: false,
+      edit: false,
+      id: '',
       name: '',
       job_role: '',
       birthdate: '',
@@ -107,21 +110,48 @@ export default {
       loading: false,
     }
   },
+  created() {
+    const id = this.$router.currentRoute.query.id
+    if (id) {
+      this.edit = true
+      this.fetchData(id)
+    }
+  },
   mounted() {
     this.isHydrated = true
   },
   methods: {
+    async fetchData(id) {
+      const response = await this.$axios.get(`/navers/${id}`)
+      this.name = response.data.name
+      this.job_role = response.data.job_role
+      this.birthdate = new Date(response.data.birthdate).toLocaleDateString(
+        'pt-BR'
+      )
+      this.admission_date = new Date(
+        response.data.admission_date
+      ).toLocaleDateString('pt-BR')
+      this.project = response.data.project
+      this.url = response.data.url
+      this.id = response.data.id
+    },
     async save() {
       this.loading = true
-      await this.$axios.post('/navers', {
+      const params = {
         name: this.name,
         job_role: this.job_role,
         birthdate: this.birthdate,
         admission_date: this.admission_date,
         project: this.project,
         url: this.url,
-      })
-      this.$router.push({ path: 'dashboard', query: { saved: true } })
+      }
+      if (!this.edit) {
+        await this.$axios.post('/navers', params)
+        this.$router.push({ path: 'dashboard', query: { saved: true } })
+      } else {
+        await this.$axios.put(`/navers/${this.id}`, params)
+        this.$router.push({ path: 'dashboard', query: { edited: true } })
+      }
     },
   },
 }

@@ -49,7 +49,9 @@
               </v-tooltip>
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
-                  <v-icon color="primary" v-on="on">mdi-pencil</v-icon>
+                  <v-icon color="primary" v-on="on" @click="edit"
+                    >mdi-pencil</v-icon
+                  >
                 </template>
                 <span>Editar Naver</span>
               </v-tooltip>
@@ -82,6 +84,9 @@ export default {
     deleteNaver() {
       this.dialog = false
       this.$emit('delete-naver')
+    },
+    edit() {
+      this.$router.push({ path: 'create', query: { id: this.naver.id } })
     },
   },
 }

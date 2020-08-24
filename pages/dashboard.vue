@@ -76,6 +76,10 @@ export default {
       this.snackbarText = 'Naver salvo com sucesso!'
       this.snackbar = true
     }
+    if (this.$router.currentRoute.query.edited) {
+      this.snackbarText = 'Naver atualizado com sucesso!'
+      this.snackbar = true
+    }
   },
   methods: {
     async reload() {
