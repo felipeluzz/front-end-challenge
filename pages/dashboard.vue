@@ -45,7 +45,6 @@
     </v-row>
     <v-snackbar v-model="snackbar" bottom color="secondary" right>
       {{ snackbarText }}
-
       <template v-slot:action="{ attrs }">
         <v-btn v-bind="attrs" dark text @click="snackbar = false">
           fechar

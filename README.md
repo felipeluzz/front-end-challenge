@@ -1,4 +1,31 @@
-# front-end-challenge
+# Front-end Challenge
+
+Desenvolvimento da aplicação proposta em: https://github.com/naveteam/front-end-challenge
+
+
+## Funcionalidades propostas e desenvolvidas
+* Sistema de login
+
+* Listagem de membros
+
+* CRUD de navers
+
+* Comunicação com a API
+
+### Extras
+* Avatar padrão para navers que não tiverem foto
+
+* Validação dos inputs
+
+* Página de erro personalizada
+
+* Reponsividade para dispositivos móveis
+
+* Mensagens de erro no login e na criação/edição de navers
+
+### Tecnologias utilizadas
+Para o desenvolvimento da aplicação foram utilizados [Nuxtjs](https://nuxtjs.org/), [Vuetify](https://vuetifyjs.com/en/) e [Axios](https://axios.nuxtjs.org/), em suas versões mais recentes.
+
 
 ## Build Setup
 

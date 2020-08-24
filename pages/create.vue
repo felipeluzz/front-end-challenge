@@ -86,6 +86,14 @@
         >
       </div>
     </v-col>
+    <v-snackbar v-model="snackbar" bottom color="secondary" right>
+      Erro no servidor, tente novamente.
+      <template v-slot:action="{ attrs }">
+        <v-btn v-bind="attrs" dark text @click="snackbar = false">
+          fechar
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-row>
 </template>
 
@@ -108,6 +116,7 @@ export default {
       valid: false,
       date: '##/##/####',
       loading: false,
+      snackbar: false,
     }
   },
   created() {
@@ -122,18 +131,22 @@ export default {
   },
   methods: {
     async fetchData(id) {
-      const response = await this.$axios.get(`/navers/${id}`)
-      this.name = response.data.name
-      this.job_role = response.data.job_role
-      this.birthdate = new Date(response.data.birthdate).toLocaleDateString(
-        'pt-BR'
-      )
-      this.admission_date = new Date(
-        response.data.admission_date
-      ).toLocaleDateString('pt-BR')
-      this.project = response.data.project
-      this.url = response.data.url
-      this.id = response.data.id
+      try {
+        const response = await this.$axios.get(`/navers/${id}`)
+        this.name = response.data.name
+        this.job_role = response.data.job_role
+        this.birthdate = new Date(response.data.birthdate).toLocaleDateString(
+          'pt-BR'
+        )
+        this.admission_date = new Date(
+          response.data.admission_date
+        ).toLocaleDateString('pt-BR')
+        this.project = response.data.project
+        this.url = response.data.url
+        this.id = response.data.id
+      } catch {
+        this.snackbar = true
+      }
     },
     async save() {
       this.loading = true
@@ -146,11 +159,21 @@ export default {
         url: this.url,
       }
       if (!this.edit) {
-        await this.$axios.post('/navers', params)
-        this.$router.push({ path: 'dashboard', query: { saved: true } })
+        try {
+          await this.$axios.post('/navers', params)
+          this.$router.push({ path: 'dashboard', query: { saved: true } })
+        } catch {
+          this.snackbar = true
+          this.loading = false
+        }
       } else {
-        await this.$axios.put(`/navers/${this.id}`, params)
-        this.$router.push({ path: 'dashboard', query: { edited: true } })
+        try {
+          await this.$axios.put(`/navers/${this.id}`, params)
+          this.$router.push({ path: 'dashboard', query: { edited: true } })
+        } catch {
+          this.snackbar = true
+          this.loading = false
+        }
       }
     },
   },
