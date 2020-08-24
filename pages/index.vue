@@ -13,26 +13,25 @@
       </div>
       <!-- Form -->
       <v-col cols="12">
-        <v-form v-model="valid">
-          <v-text-field
-            v-model="email"
-            class="mb-3"
-            label="E-mail"
-            color="primary"
-            :rules="[$rules.required(), $rules.email()]"
-            outlined
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            label="Senha"
-            color="primary"
-            :rules="[$rules.required()]"
-            outlined
-            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="show ? 'text' : 'password'"
-            @click:append="show = !show"
-          ></v-text-field>
-        </v-form>
+        <v-text-field
+          v-model="email"
+          class="mb-3"
+          label="E-mail"
+          color="primary"
+          :rules="[$rules.required(), $rules.email()]"
+          outlined
+          validate-on-blur
+        ></v-text-field>
+        <v-text-field
+          v-model="password"
+          label="Senha"
+          color="primary"
+          :rules="[$rules.required()]"
+          outlined
+          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show ? 'text' : 'password'"
+          @click:append="show = !show"
+        ></v-text-field>
       </v-col>
       <!-- Button -->
       <v-col cols="12" class="py-0">
@@ -64,10 +63,20 @@ export default {
       email: '',
       password: '',
       show: false,
-      valid: false,
       unauthorized: false,
       loading: false,
     }
+  },
+  computed: {
+    valid() {
+      if (
+        this.$rules.email()(this.email) === true &&
+        this.$rules.required()(this.password) === true
+      ) {
+        return true
+      }
+      return false
+    },
   },
   methods: {
     async login() {

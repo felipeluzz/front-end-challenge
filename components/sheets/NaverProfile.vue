@@ -7,7 +7,12 @@
         :src="naver.url"
         alt="Foto do naver"
         :height="imageHeight"
-      ></v-img>
+      >
+        <v-img
+          slot="placeholder"
+          src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+        ></v-img>
+      </v-img>
     </ExpandedProfile>
     <div class="mt-4">
       <p class="name" :style="{ fontSize: size }">{{ naver.name }}</p>

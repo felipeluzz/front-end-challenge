@@ -4,7 +4,13 @@
     <div class="d-flex flex-column flex-sm-row align-center">
       <span class="page-title mb-0 mb-4">Navers</span>
       <v-spacer></v-spacer>
-      <v-btn depressed tile color="button" class="pa-6 white--text"
+      <v-btn
+        depressed
+        tile
+        color="button"
+        class="pa-6 white--text"
+        to="/create"
+        nuxt
         >Adicionar Naver</v-btn
       >
     </div>
